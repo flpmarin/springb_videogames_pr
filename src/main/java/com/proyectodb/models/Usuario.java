@@ -7,28 +7,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name="usuarios")
+@Table(name = "usuarios")
 public class Usuario {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre_Usuario;
-    private String correo_Electronico;
+    private String nombreUsuario;
+    private String correoElectronico;
     private String contrasena;
 
     public Usuario() {
     }
 
-    
-    public Usuario(Long id, String nombre_Usuario, String correo_Electronico, String contrasena) {
+    public Usuario(Long id, String nombreUsuario, String correoElectronico, String contrasena) {
         this.id = id;
-        this.nombre_Usuario = nombre_Usuario;
-        this.correo_Electronico = correo_Electronico;
+        this.nombreUsuario = nombreUsuario;
+        this.correoElectronico = correoElectronico;
         this.contrasena = contrasena;
     }
-    
-    
 
     public Long getId() {
         return id;
@@ -38,20 +35,20 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombre_Usuario() {
-        return nombre_Usuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setNombre_Usuario(String nombre_Usuario) {
-        this.nombre_Usuario = nombre_Usuario;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public String getCorreo_Electronico() {
-        return correo_Electronico;
+    public String getCorreoElectronico() {
+        return correoElectronico;
     }
 
-    public void setCorreo_Electronico(String correo_Electronico) {
-        this.correo_Electronico = correo_Electronico;
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
     public String getContrasena() {
@@ -61,6 +58,4 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-  
-    
 }
