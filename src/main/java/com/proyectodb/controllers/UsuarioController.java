@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    @Autowired
+    @Autowired // Inyección de dependencias, es decir, Spring se encarga de crear una instancia de UsuarioRepository y la asigna a la variable usuarioRepository
     private UsuarioRepository usuarioRepository;
 
     @CrossOrigin(origins = "http://localhost:5173") // Ajusta esto según sea necesario
@@ -78,10 +78,10 @@ public class UsuarioController {
 
     @CrossOrigin(origins = "http://localhost:5173") // Ajusta esto según sea necesario
     @PostMapping("/register")
-    public ResponseEntity<?> registerUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> registerUsuario(@RequestBody Usuario usuario) { // el <?> es un comodín que representa cualquier tipo de objeto
         Optional<Usuario> existingUsuarioCorreo = usuarioRepository
                 .findByCorreoElectronico(usuario.getCorreoElectronico());
-        Optional<Usuario> existingUsuarioNombre = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario());
+        Optional<Usuario> existingUsuarioNombre = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario()); // Optional es una clase de Java que representa un valor que puede ser nulo o no nulo (existente o no existente) y se utiliza para evitar las excepciones de puntero nulo (NullPointerException), 
 
         if (existingUsuarioCorreo.isPresent() || existingUsuarioNombre.isPresent()) {
             return ResponseEntity
@@ -98,7 +98,7 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUsuario(@RequestBody Usuario usuario) {
         // Buscar el usuario por nombre de usuario
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario());
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario()); // Optional es una clase de Java que representa un valor que puede ser nulo o no nulo (existente o no existente) y se utiliza para evitar las excepciones de puntero nulo (NullPointerException), usuarioOpt es un objeto de tipo Optional que contiene el usuario con el nombre de usuario especificado si existe en la base de datos o un valor nulo si no existe. es decir valida si el usuario existe en la base de datos por el nombre de usuario
 
         // Verificar si el usuario existe
         if (usuarioOpt.isPresent()) {
@@ -107,7 +107,7 @@ public class UsuarioController {
             // Verificar si la contraseña coincide
             if (usuarioExistente.getContrasena().equals(usuario.getContrasena())) {
                 // Si la contraseña coincide, devolver una respuesta exitosa
-                return ResponseEntity.ok().body(Collections.singletonMap("message", "Login successful"));
+                return ResponseEntity.ok().body(Collections.singletonMap("message", "Login successful")); // ResponseEntity.ok crea una respuesta HTTP con el código de estado 200 (OK) y el cuerpo de la respuesta es un mensaje de éxito, Collections.singletonMap crea un mapa inmutable con una sola entrada, es decir, un solo par clave-valor, singletonMap es un método de Collections, y collections es una clase de Java que contiene métodos estáticos para operar en colecciones, es decir, crea un mapa con una clave "message" y un valor "Login successful"
             }
         }
 

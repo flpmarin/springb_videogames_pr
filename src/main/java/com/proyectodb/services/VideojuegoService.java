@@ -3,12 +3,10 @@ package com.proyectodb.services;
 import com.proyectodb.models.Videojuego;
 import com.proyectodb.models.Plataforma;
 import com.proyectodb.models.Genero;
-import com.proyectodb.models.Desarrollador;
 import com.proyectodb.models.Fecha;
 import com.proyectodb.repositories.VideojuegoRepository;
 import com.proyectodb.repositories.PlataformaRepository;
 import com.proyectodb.repositories.GeneroRepository;
-import com.proyectodb.repositories.DesarrolladorRepository;
 import com.proyectodb.repositories.FechaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,104 +37,73 @@ public class VideojuegoService {
     private GeneroRepository generoRepository;
 
     @Autowired
-    private DesarrolladorRepository desarrolladorRepository;
-
-    @Autowired
     private FechaRepository fechaRepository;
 
-    // Clase auxiliar para mapear los datos de la API de RAWG
     private static class RawgGameResponse {
         public List<RawgGame> results;
 
         private static class RawgGame {
             public int id;
-            public String slug;
             public String name;
             public String released;
-            public String background_image;
-            public double rating;
-            public int rating_top;
-            public EsrbRating esrb_rating;
             public List<RawgPlatform> platforms;
-            public List<RawgDeveloper> developers;
             public List<RawgGenre> genres;
-
-            private static class EsrbRating {
-                public int id;
-                public String slug;
-                public String name;
-            }
 
             private static class RawgPlatform {
                 public PlatformDetails platform;
 
                 private static class PlatformDetails {
-                    public int id;
                     public String name;
                 }
             }
 
-            private static class RawgDeveloper {
-                public int id;
-                public String name;
-            }
-
             private static class RawgGenre {
-                public int id;
                 public String name;
             }
         }
     }
 
     private static class RawgGameDetail {
-        public int id;
-        public String slug;
-        public String name;
         public String description;
-        public String released;
-        public List<RawgGameResponse.RawgGame.RawgPlatform> platforms;
-        public List<RawgGameResponse.RawgGame.RawgDeveloper> developers;
-        public List<RawgGameResponse.RawgGame.RawgGenre> genres;
     }
 
     public void fetchAndSaveVideojuegos() {
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "https://api.rawg.io/api/games?key=421ffe22fb2e4d74a8842e3b920687a8&page_size=10&page=";
+        String apiUrl = "https://api.rawg.io/api/games?key=417b1db168dc48608cb268504fa9a94c&page_size=10&page=";// 
         int page = 1;
 
         try {
             while (true) {
                 String currentUrl = apiUrl + page;
-                logger.info("Fetching data from URL: " + currentUrl);
+                logger.info("Obteniendo datos de la URL: " + currentUrl);
                 RawgGameResponse response = restTemplate.getForObject(currentUrl, RawgGameResponse.class);
                 List<RawgGameResponse.RawgGame> games = response.results;
+
                 if (games == null || games.isEmpty()) {
-                    logger.info("No more data to fetch, breaking loop.");
-                    break; // No more data to fetch
+                    logger.info("No hay más datos para obtener, saliendo del bucle.");
+                    break;
                 }
 
                 for (RawgGameResponse.RawgGame game : games) {
                     if (game.name == null || game.released == null) {
-                        logger.warning("Skipping game with missing fields: " + game.id);
-                        continue; // Skip this game if any of these fields is null
+                        logger.warning("Saltando juego con campos faltantes: " + game.id);
+                        continue;
                     }
 
                     // Verificar si ya existe un Videojuego con el mismo nombre
                     Optional<Videojuego> existingVideojuego = videojuegoRepository.findByTitulo(game.name);
-                    Videojuego videojuego;
                     if (existingVideojuego.isPresent()) {
-                        // Si ya existe, usar el Videojuego existente
-                        videojuego = existingVideojuego.get();
-                    } else {
-                        // Si no existe, crear un nuevo Videojuego
-                        videojuego = new Videojuego();
+                        logger.info("El videojuego ya existe, saltando: " + game.name);
+                        continue; // Si ya existe, no hacer nada y continuar con el siguiente juego
                     }
 
+                    // Crear un nuevo Videojuego
+                    Videojuego videojuego = new Videojuego();
                     videojuego.setTitulo(game.name);
 
                     // Obtener descripción detallada
-                    String detailUrl = "https://api.rawg.io/api/games/" + game.id + "?key=421ffe22fb2e4d74a8842e3b920687a8";
-                    logger.info("Fetching game detail from URL: " + detailUrl);
+                    String detailUrl = "https://api.rawg.io/api/games/" + game.id + "?key=417b1db168dc48608cb268504fa9a94c";
+                    logger.info("Obteniendo detalles del juego desde la URL: " + detailUrl);
                     RawgGameDetail gameDetail = restTemplate.getForObject(detailUrl, RawgGameDetail.class);
                     videojuego.setDescripcion(gameDetail.description);
 
@@ -167,24 +134,7 @@ public class VideojuegoService {
                         });
                         videojuego.setId_Genero(genero.getId());
                     } else {
-                        logger.warning("Skipping game without genre: " + game.id);
-                        continue;
-                    }
-
-                    // Desarrolladores
-                    if (game.developers != null && !game.developers.isEmpty()) {
-                        RawgGameResponse.RawgGame.RawgDeveloper rawgDeveloper = game.developers.get(0);
-                        String developerName = rawgDeveloper.name;
-                        Optional<Desarrollador> optionalDesarrollador = desarrolladorRepository.findByNombre(developerName);
-                        Desarrollador desarrollador = optionalDesarrollador.orElseGet(() -> {
-                            Desarrollador newDesarrollador = new Desarrollador();
-                            newDesarrollador.setNombre(developerName);
-                            newDesarrollador.setDescripcion("Descripción de " + developerName);
-                            return desarrolladorRepository.save(newDesarrollador);
-                        });
-                        videojuego.setId_Desarrollador(desarrollador.getId());
-                    } else {
-                        logger.warning("Skipping game without developer: " + game.id);
+                        logger.warning("Saltando juego sin género: " + game.id);
                         continue;
                     }
 
@@ -193,8 +143,8 @@ public class VideojuegoService {
                     try {
                         releaseDate = new SimpleDateFormat("yyyy-MM-dd").parse(game.released);
                     } catch (ParseException e) {
-                        logger.warning("Skipping game with invalid date: " + game.id);
-                        continue; // Skip this game if the release date is not in the correct format
+                        logger.warning("Saltando juego con fecha inválida: " + game.id);
+                        continue;
                     }
 
                     Fecha fecha = fechaRepository.findByFecha(releaseDate).orElseGet(() -> {
@@ -204,16 +154,17 @@ public class VideojuegoService {
                     });
                     videojuego.setId_Fecha_Lanzamiento(fecha.getId());
 
+                    // Guardar el videojuego después de establecer todas las relaciones
                     videojuegoRepository.save(videojuego);
-                    logger.info("Saved game: " + videojuego.getTitulo());
+                    logger.info("Juego guardado: " + videojuego.getTitulo());
                 }
                 page++;
             }
         } catch (HttpClientErrorException | ResourceAccessException e) {
-            // Handle error when calling the API
+            // Manejar error al llamar a la API
             logger.severe("Error al llamar a la API: " + e.getMessage());
         } catch (Exception e) {
-            logger.severe("Unexpected error: " + e.getMessage());
+            logger.severe("Error inesperado: " + e.getMessage());
         }
     }
 }
