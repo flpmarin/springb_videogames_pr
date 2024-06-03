@@ -6,6 +6,9 @@ import com.proyectodb.models.VideojuegoUsuario;
 import com.proyectodb.repositories.UsuarioRepository;
 import com.proyectodb.repositories.VideojuegoRepository;
 import com.proyectodb.repositories.VideojuegoUsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +46,8 @@ public class VideojuegoUsuarioController {
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping
-    public ResponseEntity<VideojuegoUsuario> addVideojuegoToUsuario(@RequestParam Long usuarioId, @RequestParam Long videojuegoId) {
+    public ResponseEntity<VideojuegoUsuario> addVideojuegoToUsuario(@RequestParam Long usuarioId,
+            @RequestParam Long videojuegoId) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
         Optional<Videojuego> videojuegoOpt = videojuegoRepository.findById(videojuegoId);
 
@@ -60,7 +64,9 @@ public class VideojuegoUsuarioController {
 
     @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping
-    public ResponseEntity<Void> removeVideojuegoFromUsuario(@RequestParam Long usuarioId, @RequestParam Long videojuegoId) {
+    @Transactional
+    public ResponseEntity<Void> removeVideojuegoFromUsuario(@RequestParam Long usuarioId,
+            @RequestParam Long videojuegoId) {
         if (!videojuegoUsuarioRepository.existsByUsuarioIdAndVideojuegoId(usuarioId, videojuegoId)) {
             return ResponseEntity.notFound().build();
         }
