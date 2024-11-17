@@ -21,9 +21,8 @@ This is the backend service for the **Videogame Hub App**, built with Spring Boo
 
 Integration with the Frontend
 
-The backend is designed to work with the Vue.js frontend located at: Game Frontend Repository
-Notes on Authentication
-[See frontend setup here.](https://github.com/flpmarin/videogame-hub-frontend)
+The backend is designed to work with the Vue.js frontend located at: 
+[See videogame-hub-frontend  repo](https://github.com/flpmarin/videogame-hub-frontend)
 
 The login and authentication are handled on the frontend (using Vue.js).
 No Spring Security or JWT implementation is used in this project.
