@@ -2,7 +2,7 @@
 
 This is the backend service for the **Videogame Hub App**, built with Spring Boot and MySQL. It provides RESTful APIs for managing a personal video game collection and fetching gaming news from an external API.
 
-![Game Management App](./img.webp)
+[![Proyecto](https://raw.githubusercontent.com/flpmarin/videogame-hub-backend/main/img.webp)](https://github.com/flpmarin/videogame-hub-backend)
 
 ---
 
