@@ -33,7 +33,7 @@ No Spring Security or JWT implementation is used in this project.
 3. **Maven** installed for dependency management.
 
 ## Team Videogames-hub
-- Antonela Diáz
-- Sergio Domínguez
-- Juan José Romero
-- Felipe Marín
+- [Antonela Díaz](https://github.com/antoneladg91)
+- [Sergio Domínguez](https://github.com/DISTRONYX)
+- [Juan José Romero](https://github.com/juanjo2gm)
+- [Felipe Marín](http://github.com/flpmarin)
