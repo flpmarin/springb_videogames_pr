@@ -1,3 +1,10 @@
+
+
+## Team Videogames-hub
+- [Antonela Díaz](https://github.com/antoneladg91)
+- [Sergio Domínguez](https://github.com/DISTRONYX)
+- [Juan José Romero](https://github.com/juanjo2gm)
+- [Felipe Marín](http://github.com/flpmarin)
 # videogame-hub Backend
 
 This is the backend service for the **Videogame Hub App**, built with Spring Boot and MySQL. It provides RESTful APIs for managing a personal video game collection and fetching gaming news from an external API.
@@ -32,8 +39,3 @@ No Spring Security or JWT implementation is used in this project.
 2. **MySQL** server running locally or accessible remotely.
 3. **Maven** installed for dependency management.
 
-## Team Videogames-hub
-- [Antonela Díaz](https://github.com/antoneladg91)
-- [Sergio Domínguez](https://github.com/DISTRONYX)
-- [Juan José Romero](https://github.com/juanjo2gm)
-- [Felipe Marín](http://github.com/flpmarin)
