@@ -46,13 +46,17 @@ public class VideojuegoUsuarioController {
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping
-    public ResponseEntity<VideojuegoUsuario> addVideojuegoToUsuario(@RequestParam Long usuarioId,
-            @RequestParam Long videojuegoId) {
+    public ResponseEntity<?> addVideojuegoToUsuario(@RequestParam Long usuarioId, @RequestParam Long videojuegoId) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
         Optional<Videojuego> videojuegoOpt = videojuegoRepository.findById(videojuegoId);
 
         if (!usuarioOpt.isPresent() || !videojuegoOpt.isPresent()) {
             return ResponseEntity.badRequest().build();
+        }
+
+        // Verificar si la relación ya existe
+        if (videojuegoUsuarioRepository.existsByUsuarioIdAndVideojuegoId(usuarioId, videojuegoId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("La relación ya existe");
         }
 
         VideojuegoUsuario videojuegoUsuario = new VideojuegoUsuario();
