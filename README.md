@@ -53,84 +53,13 @@ No Spring Security or JWT implementation is used in this project.
 
 ## Backend Configuration
 
-1. **Set up the database:**
-   - Create the `videojuego` database in MySQL:
-     ```sql
-     CREATE DATABASE videojuego;
-     ```
+**Set up the Database**
 
-   - Set up the required tables using the following SQL schema:
+1. Navigate to the `src/main/resources/db` directory in the backend project.
+2. Use the following command to load the database schema into MySQL:
+   ```bash
+   mysql -u <username> -p < src/main/resources/db/schema.sql
 
-
-     ```sql
-     CREATE TABLE `calificaciones` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_Videojuego` bigint NOT NULL,
-  `id_Usuario` bigint NOT NULL,
-  `calificacion` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_Videojuego` (`id_Videojuego`),
-  KEY `id_Usuario` (`id_Usuario`),
-  CONSTRAINT `calificaciones_ibfk_1` FOREIGN KEY (`id_Videojuego`) REFERENCES `videojuegos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `calificaciones_ibfk_2` FOREIGN KEY (`id_Usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `fechas` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `fecha` datetime(6) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1081 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `generos` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `plataformas` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `descripcion` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `usuarios` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `nombre_Usuario` varchar(50) NOT NULL,
-  `correo_Electronico` varchar(100) NOT NULL,
-  `contrasena` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `usuarios_videojuegos` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_Usuario` bigint NOT NULL,
-  `id_Videojuego` bigint NOT NULL,
-  `fecha_agregado` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `id_Usuario` (`id_Usuario`),
-  KEY `id_Videojuego` (`id_Videojuego`),
-  CONSTRAINT `usuarios_videojuegos_ibfk_1` FOREIGN KEY (`id_Usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `usuarios_videojuegos_ibfk_2` FOREIGN KEY (`id_Videojuego`) REFERENCES `videojuegos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `videojuegos` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(100) NOT NULL,
-  `id_Plataforma` bigint NOT NULL,
-  `id_Fecha_Lanzamiento` bigint NOT NULL,
-  `id_Genero` bigint NOT NULL,
-  `descripcion` text,
-  `id_desarrollador` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_Plataforma` (`id_Plataforma`),
-  KEY `id_Fecha_Lanzamiento` (`id_Fecha_Lanzamiento`),
-  KEY `id_Genero` (`id_Genero`),
-  CONSTRAINT `videojuegos_ibfk_1` FOREIGN KEY (`id_Plataforma`) REFERENCES `plataformas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `videojuegos_ibfk_2` FOREIGN KEY (`id_Fecha_Lanzamiento`) REFERENCES `fechas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `videojuegos_ibfk_3` FOREIGN KEY (`id_Genero`) REFERENCES `generos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-     ```
 
 **Configure the `application.properties` file:**
    - Edit the `application.properties` file with your credentials:
