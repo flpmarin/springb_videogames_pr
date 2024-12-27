@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Eclipse ###
+# application.properties
+# application.yml
