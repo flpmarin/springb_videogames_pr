@@ -34,41 +34,33 @@ The backend is designed to work with the Vue.js frontend located at:
 The login and authentication are handled on the frontend (using Vue.js).
 No Spring Security or JWT implementation is used in this project.
 
-### Prerequisites
-1. **Java 17** or higher installed.
-2. **MySQL** server running locally or accessible remotely.
-3. **Maven** installed for dependency management.
 
-
-# Proyecto Fullstack: Backend en Spring Boot y Frontend en Vue.js
-
-Este proyecto es una aplicación fullstack que utiliza Spring Boot para el backend y Vue.js para el frontend.
-
-## Requisitos previos
+## Prerequisites
 
 1. **Backend (Spring Boot):**
-   - Java 17 o superior
+   - Java 17 or higher
    - Maven
-   - MySQL 8 o superior
+   - MySQL 8 or higher
 
 2. **Frontend (Vue.js):**
-   - Node.js 16 o superior
-   - npm (incluido con Node.js)
+   - Node.js 16 or higher
+   - npm (included with Node.js)
 
-3. **Base de datos:**
-   - MySQL instalado y configurado.
+3. **Database:**
+   - MySQL installed and configured.
 
 ---
 
-## Configuración del backend
+## Backend Configuration
 
-1. **Configura la base de datos:**
-   - Crea la base de datos `videojuego` en MySQL:
+1. **Set up the database:**
+   - Create the `videojuego` database in MySQL:
      ```sql
      CREATE DATABASE videojuego;
      ```
 
-   - Configura las tablas necesarias usando el siguiente esquema SQL.:
+   - Set up the required tables using the following SQL schema:
+
 
      ```sql
      CREATE TABLE `calificaciones` (
@@ -140,37 +132,32 @@ CREATE TABLE `videojuegos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
      ```
 
-2. **Configura el archivo `application.properties`:**
-   - Copia el archivo de ejemplo:
-     ```bash
-     cp src/main/resources/application.properties.example src/main/resources/application.properties
-     ```
-   - Edita el archivo `application.properties` con tus credenciales de base de datos:
+**Configure the `application.properties` file:**
+   - Edit the `application.properties` file with your credentials:
      ```properties
-     spring.datasource.username=tu_usuario
-     spring.datasource.password=tu_contraseña
+     spring.datasource.username=your_username
+     spring.datasource.password=your_password
      ```
 
-3. **(Opcional) Configura variables de entorno**
-   En lugar de editar el archivo `application.properties`, puedes configurar las credenciales como variables de entorno globales.
+3. **(Optional) Configure environment variables**
+   Instead of editing the `application.properties` file, you can configure the credentials as global environment variables.
 
-4. **Inicia el backend:**
-   Una vez configurado todo, navega al directorio del backend y ejecuta el servidor:
+4. **Start the backend:**
+   Run the server:
    ```bash
    mvn spring-boot:run
-   ```
+
 ---
+## Frontend Configuration
 
-## Configuración del frontend
+1. Navigate to the videogames directory.
 
-1. Navega al directorio del videogames.
-
-2. Instala las dependencias:
+2. Install the dependencies:
    ```bash
    npm install
    ```
 
-3. Inicia el servidor de desarrollo:
+3. Run dev server:
    ```bash
    npm run dev
    ```
