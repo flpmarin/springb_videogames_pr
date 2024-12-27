@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ### Eclipse ###
-application.properties
-application.yml
+# application.properties
+# application.yml
